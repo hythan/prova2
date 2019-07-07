@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "users")
@@ -36,6 +37,21 @@ public class User {
 
     @Column(name = "electronic_signature")
     private String electronicSignature;
+
+    private Date created;
+    private Date updated;
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updated = new Date();
+    }
+
+    @PrePersist
+    public void onSave() {
+        final Date now = new Date();
+        this.created = now;
+        this.updated = now;
+    }
 
 
 }

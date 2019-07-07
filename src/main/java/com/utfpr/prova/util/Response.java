@@ -10,10 +10,6 @@ import org.springframework.validation.BindingResult;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author ronifabio
- */
 public class Response<T> {
 
     private T data;
