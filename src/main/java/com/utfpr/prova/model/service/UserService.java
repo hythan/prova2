@@ -27,6 +27,10 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
+    public void deleteById(Long id) {
+        this.userRepository.deleteById(id);
+    }
+
     public Optional<User> findByEmail(String userName){
         return Optional.ofNullable(this.userRepository.findByEmail(userName));
     }

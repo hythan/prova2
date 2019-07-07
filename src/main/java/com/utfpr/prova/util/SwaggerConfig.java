@@ -34,9 +34,9 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        String description = "Documentação da API para acesso aos endpoints do domínio de Universidade";
+        String description = "Documentação da API para acesso aos endpoints do domínio de Ordem de serviço";
         return new ApiInfoBuilder()
-                .title("Universidade API")
+                .title("Ordem de serviço API")
                 .description(description)
                 .version("1.0")
                 .build();
