@@ -26,4 +26,8 @@ public class UserService {
     public User save(User user) {
         return this.userRepository.save(user);
     }
+
+    public Optional<User> findByEmail(String userName){
+        return Optional.ofNullable(this.userRepository.findByEmail(userName));
+    }
 }

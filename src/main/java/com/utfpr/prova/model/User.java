@@ -1,6 +1,7 @@
 package com.utfpr.prova.model;
 
 
+import com.utfpr.prova.security.ProfileEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,10 +24,15 @@ public class User {
             unique = true)
     private String userName;
 
+    @Column(name = "email",
+            unique = true)
+    private String email;
+
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role_name")
-    private String roleName;
+    private ProfileEnum roleName;
 
     @Column(name = "electronic_signature")
     private String electronicSignature;
