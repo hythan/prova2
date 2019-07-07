@@ -3,6 +3,8 @@ package com.utfpr.prova.model.service;
 import com.utfpr.prova.model.Department;
 import com.utfpr.prova.model.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,5 +30,9 @@ public class DepartmentService {
 
     public void deleteById(Long id){
         departmentRepository.deleteById(id);
+    }
+
+    public Page<Department> findAll(PageRequest pageRequest){
+        return departmentRepository.findAll(pageRequest);
     }
 }

@@ -1,5 +1,6 @@
 package com.utfpr.prova.model.dto;
 
+import com.utfpr.prova.model.Department;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,4 +18,5 @@ public class DepartmentDTO {
 
     @NotEmpty(message = "Por favor ensira o nome do departamento.")
     private String name;
+
 }
