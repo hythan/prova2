@@ -8,10 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.utfpr.prova.util.Response;
 
@@ -20,17 +21,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RestController(value = "/api/departamentos")
-public class DepartmentController {
+@RestController
+@RequestMapping("/api/departamentos")
+public class    DepartmentController {
 
     @Autowired
     DepartmentService departmentService;
 
     @Autowired
     DepartmentMapper departmentMapper;
-
-    @Value("2")
-    private int paginationAmount;
 
     @GetMapping
     public ResponseEntity<List<DepartmentDTO>> all(){
@@ -46,37 +45,10 @@ public class DepartmentController {
         return ResponseEntity.ok(departmentDTOS);
     }
 
-    @GetMapping(value = "/paginacao-departamentos")
-    public ResponseEntity<Response<List<DepartmentDTO>>> findAllPagination(
-            @RequestParam(value = "pag", defaultValue = "0") int page,
-            @RequestParam(value = "ord", defaultValue = "name") String order,
-            @RequestParam(value = "dir", defaultValue = "ASC") String direction) {
-
-
-        Response<List<DepartmentDTO>> response = new Response<>();
-        PageRequest pageRequest = PageRequest.of(page, this.paginationAmount, Sort.Direction.valueOf(direction), order);
-
-        Page<Department> departments = this.departmentService.findAll(pageRequest);
-        ArrayList<DepartmentDTO> dtos = new ArrayList<>();
-
-        for (Department d: departments
-             ) {
-            dtos.add(departmentMapper.toDTO(d));
-        }
-
-        Page<DepartmentDTO> departmentDTOS = (Page<DepartmentDTO>) dtos;
-        response.setData(departmentDTOS.getContent());
-        return ResponseEntity.ok(response);
-    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable("id") Long id, BindingResult result){
+    public ResponseEntity<Response<DepartmentDTO>> getById(@PathVariable("id") Long id){
         Response<DepartmentDTO> response = new Response<>();
-
-        if (result.hasErrors()) {
-            response.setErrors(result);
-            return ResponseEntity.badRequest().body(response);
-        }
 
         Optional<Department> department = departmentService.findById(id);
 
@@ -86,17 +58,62 @@ public class DepartmentController {
         }
 
         DepartmentDTO departmentDTO = departmentMapper.toDTO(department.get());
-        return  ResponseEntity.ok(departmentDTO);
+        response.setData(departmentDTO);
+        return  ResponseEntity.ok(response);
     }
 
-    @PostMapping
-    public Department save(@Validated @RequestBody  DepartmentDTO departmentDTO){
+    @GetMapping(value = "/paginacao")
+    public ResponseEntity<Response<Page<DepartmentDTO>>> findWithPage(
+            @PageableDefault(page=0, size=2, direction = Sort.Direction.ASC) Pageable pageable) {
+
+        Response<Page<DepartmentDTO>> response = new Response<>();
+
+        Page<Department> departments = this.departmentService.findAll(pageable);
+        Page<DepartmentDTO> dtoPage = departments.map(d -> departmentMapper.toDTO(d));
+
+        response.setData(dtoPage);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/novo")
+    public ResponseEntity<Response<DepartmentDTO>> save(@Valid @RequestBody DepartmentDTO departmentDTO, BindingResult result) {
+
+        Response<DepartmentDTO> response = new Response<>();
+        if (result.hasErrors()) {
+            response.setErrors(result);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        if (departmentDTO.getId() != null) {
+            Optional<Department> o = departmentService.findById(departmentDTO.getId());
+            if (o.isPresent()) {
+                response.addError("Departamento já cadastrado.");
+                return ResponseEntity.badRequest().body(response);
+            }
+        }
+
         Department department = departmentMapper.toEntity(departmentDTO);
-        return departmentService.save(department);
+        departmentService.save(department);
+
+        response.setData(departmentDTO);
+        return ResponseEntity.ok(response);
     }
 
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Response<String>> deleteById(@PathVariable("id") Long id){
+        Response<String> response = new Response<>();
+        Optional<Department> o = departmentService.findById(id);
 
+        if (!o.isPresent()) {
+            response.addError("Erro ao remover, departamento não encontrado para o id " + id);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        this.departmentService.deleteById(id);
+        response.setData("Departamento deletado com sucesso!");
+        return ResponseEntity.ok(response);
+    }
 
 
 }
