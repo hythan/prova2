@@ -18,10 +18,6 @@ public class UserDTO {
 
     private Long id;
 
-//    @Pattern(regexp = "^(\\s?[A-ZÀ-Ú][a-zà-ú]+)+(\\s[a-zà-ú]*)?(\\s[A-ZÀ-Ú][a-zà-ú]*)+", message = "Insira o seu nome completo iniciando com letras maíusculas.")
-    @NotEmpty(message = "Por favor insira o nome do usuário.")
-    private String userName;
-
     @Email(message = "Email inválido")
     @NotEmpty(message = "Por favor insira o email.")
     private String email;

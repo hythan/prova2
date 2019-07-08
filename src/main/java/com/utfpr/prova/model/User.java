@@ -20,9 +20,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "user_name",
-            unique = true)
-    private String userName;
 
     @Column(name = "email",
             unique = true)
@@ -40,8 +37,7 @@ public class User {
     private Date created;
     private Date updated;
 
-    public User(String userName, String email, String password, ProfileEnum roleName, String electronicSignature) {
-        this.userName = userName;
+    public User(String email, String password, ProfileEnum roleName, String electronicSignature) {
         this.email = email;
         this.password = password;
         this.roleName = roleName;

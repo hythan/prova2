@@ -113,7 +113,7 @@ public class EmployeeController {
             response.addError("Empregado não encontrado");
             return ResponseEntity.badRequest().body(response);
         }
-        if (!currentUser.getId().equals(id)) {
+        if (!currentUser.getId().equals(o.get().getUser().getId())) {
             response.addError("Você pode autorizar apenas seu próprio usuário.");
             return ResponseEntity.badRequest().body(response);
         }
