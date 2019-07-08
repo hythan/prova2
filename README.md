@@ -14,3 +14,5 @@
 - Buscas normais e com paginação;
 - Auditoria de classes de domínio;
 - Validação de DTOs com Bean Validation;
+- Testes unitários em repositórios.
+- Evitar que um usuário possa atualizar ou remover dados de outro usuário.
