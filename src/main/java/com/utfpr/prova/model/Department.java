@@ -13,7 +13,6 @@ import java.util.Date;
 @Table(name = "departments")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class Department {
 
@@ -25,6 +24,10 @@ public class Department {
 
     private Date created;
     private Date updated;
+
+    public Department(String name) {
+        this.name = name;
+    }
 
     @PreUpdate
     public void onUpdate() {

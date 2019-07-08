@@ -17,7 +17,7 @@ public class OrderMapper {
         return order;
     }
 
-    private OrderDTO toDTO(Order entity){
+    public OrderDTO toDTO(Order entity){
         OrderDTO orderDTO = mapper.map(entity, OrderDTO.class);
         return orderDTO;
     }

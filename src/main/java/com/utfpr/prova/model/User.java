@@ -14,7 +14,6 @@ import java.util.Date;
 @Table(name = "users")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class User {
 
@@ -40,6 +39,14 @@ public class User {
 
     private Date created;
     private Date updated;
+
+    public User(String userName, String email, String password, ProfileEnum roleName, String electronicSignature) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.roleName = roleName;
+        this.electronicSignature = electronicSignature;
+    }
 
     @PreUpdate
     public void onUpdate() {

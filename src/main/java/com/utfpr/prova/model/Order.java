@@ -12,7 +12,6 @@ import java.util.Date;
 @Table(name = "orders")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class Order {
 
@@ -29,6 +28,13 @@ public class Order {
 
     private Date created;
     private Date updated;
+
+
+    public Order(String description, boolean done, Employee employee) {
+        this.description = description;
+        this.done = done;
+        this.employee = employee;
+    }
 
     @PreUpdate
     public void onUpdate() {

@@ -12,7 +12,6 @@ import java.util.Date;
 @Table(name = "employees")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class Employee {
 
@@ -31,6 +30,12 @@ public class Employee {
 
     private Date created;
     private Date updated;
+
+    public Employee(String name, User user, Department department) {
+        this.name = name;
+        this.user = user;
+        this.department = department;
+    }
 
     @PreUpdate
     public void onUpdate() {
