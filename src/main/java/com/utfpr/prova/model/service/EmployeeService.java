@@ -3,6 +3,8 @@ package com.utfpr.prova.model.service;
 import com.utfpr.prova.model.Employee;
 import com.utfpr.prova.model.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,5 +28,9 @@ public class EmployeeService {
 
     public void deleteById(Long id){
          employeeRepository.deleteById(id);
+    }
+
+    public Page<Employee> findAll(Pageable page){
+        return employeeRepository.findAll(page);
     }
 }
